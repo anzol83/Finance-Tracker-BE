@@ -1,0 +1,13 @@
+{
+  "name": "transaction-history-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "Angel",
+  "license": "MIT",
+  "type": "module",
+
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  }
+}
