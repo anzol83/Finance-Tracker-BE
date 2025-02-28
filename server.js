@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 cors;
 
+// Connect to Database
 connectToMongoDB();
 
 app.use(express.json());
