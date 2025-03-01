@@ -1,26 +1,25 @@
-import "dotenv/config";
-import express from "express";
-import userRouter from "./router/userRouter.js";
-import { connectToMongoDB } from "./config/dbConfig.js";
-import cors from "cors";
+import 'dotenv/config'
+import express from 'express'
+import { connectToMongoDb } from './config/dbConfig.js'
+import cors from "cors"
+import transactionRouter from './router/transactionRouter.js'
+import userRouter from './router/userRouter.js'
 
-const app = express();
+const app = express()
+const PORT = process.env.PORT || 8000
 
-const PORT = process.env.PORT || 3000;
+// Middlewares
+app.use(express.json())
+app.use(cors())
 
-cors;
+// Connect To Database
+connectToMongoDb()
 
-// Connect to Database
-connectToMongoDB();
+// Router | API Endpoints
+app.use("/api/users", userRouter)
+app.use("/api/transactions", transactionRouter)
 
-app.use(express.json());
-
-app.use(cors());
-
-app.use("/api/users", userRouter);
-
+// Start a server
 app.listen(PORT, (error) => {
-  error
-    ? console.log(error.message)
-    : console.log(`Server Running Successfully`);
-});
+  error ? console.log("Error", error) : console.log("Server is Running")
+})

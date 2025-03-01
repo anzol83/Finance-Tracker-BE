@@ -2,7 +2,7 @@
   "name": "transaction-history-api",
   "version": "1.0.0",
   "main": "server.js",
-  "author": "Anzol",
+  "author": "Dented Code",
   "license": "MIT",
   "type": "module",
   "scripts": {
