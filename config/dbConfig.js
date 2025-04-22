@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const DB_CONNECTION_URI = process.env.CONNECTION_URI + "/transaction-history-oct"
+const DB_CONNECTION_URI = process.env.CONNECTION_URI
 
 export const connectToMongoDb = () => {
   try {
