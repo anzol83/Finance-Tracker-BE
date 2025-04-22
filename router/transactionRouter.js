@@ -1,19 +1,93 @@
-import express from "express"
-import { buildErrorResponse, buildSuccessResponse } from "../utility/responseHelper.js"
-import { createTransaction } from "../model/transactionModel.js"
+import express from "express";
+import {
+  createTransaction,
+  deleteManyTransactions,
+  deleteTransaction,
+  getTransaction,
+} from "../models/transactionModel.js";
+import { authenticate } from "../middlewares/authMiddleware.js";
+const router = express.Router();
 
-const transactionRouter = express.Router()
-
-// POST | Create a transaction
-transactionRouter.post("/", async(req, res) => {
+router.post("/", authenticate, async (req, res, next) => {
   try {
-    const transaction = await createTransaction(req.body)
+    const { type, description, amount, date } = req.body;
 
-    transaction?._id
-      ? buildSuccessResponse(res, transaction, "Created Transaction Successfully")
-      : buildErrorResponse(res, "Cannot create transaction!")
+    const newCreatedData = await createTransaction({
+      userId: req.userData._id,
+      type,
+      description,
+      amount,
+      date,
+    });
+    return res.status(201).json({
+      status: "success",
+      message: "transaction created",
+      newCreatedData,
+    });
   } catch (error) {
-    buildErrorResponse(res, "Cannot create transaction!")
+    next(error);
   }
-})
-export default transactionRouter
+});
+
+router.get("", authenticate, async (req, res, next) => {
+  try {
+    const transactionData = await getTransaction(req.userData._id);
+    return res.status(200).json({
+      status: "success",
+      transactionData,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("", authenticate, async (req, res, next) => {
+  try {
+    const transactionsids = req.body.idsToDelete;
+
+    const transactionData = await deleteManyTransactions(
+      transactionsids,
+      req.userData._id
+    );
+
+    if (transactionData) {
+      return res.status(200).json({
+        status: "success",
+        message: transactionData.deletedCount + "  transactions deleted",
+      });
+    } else {
+      return res.status(500).json({
+        status: "error",
+        message: "Error while deleting transactions",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:id", authenticate, async (req, res, next) => {
+  try {
+
+    const transactionData = await deleteTransaction(
+      req.params.id,
+      req.userData._id
+    );
+
+    if (transactionData) {
+      return res.status(200).json({
+        status: "success",
+        message: "  transaction deleted",
+      });
+    } else {
+      return res.status(500).json({
+        status: "error",
+        message: "Error while deleting transaction",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+export default router;

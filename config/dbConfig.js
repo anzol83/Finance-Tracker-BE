@@ -6,7 +6,7 @@ export const connectToMongoDb = () => {
   try {
     const connect = mongoose.connect(DB_CONNECTION_URI)
     if(connect) {
-      console.log("Database conected");
+      console.log("Database connected");
     }
   } catch (error) {
     console.log("Error:", error);
