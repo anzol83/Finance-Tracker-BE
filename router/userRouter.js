@@ -1,7 +1,7 @@
 import express from "express";
 import { createUser, getUserbyEmail } from "../models/userModel.js";
-// import { comparePassword, hashPassword } from "../utils/bcryptjs.js";
-// import { jwtSign } from "../utils/jwt.js";
+import { comparePassword, hashPassword } from "../utils/bcrypt.js";
+import { jwtSign } from "../utils/jwt.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
