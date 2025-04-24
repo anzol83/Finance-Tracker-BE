@@ -1,25 +1,34 @@
-import 'dotenv/config'
-import express from 'express'
-import { connectToMongoDb } from './config/dbConfig.js'
-import cors from "cors"
-import transactionRouter from './router/transactionRouter.js'
-import userRouter from './router/userRouter.js'
+import express from "express";
+import userRouter from "./routers/UserRouter.js";
+import TransactionRouter from "./routers/transactionRouter.js";
+import openaiRouter from "./routers/openaiRouter.js";
+import { connectDB } from "./config/mongodbConfig.js";
+import cors from "cors";
+import { errorHandler } from "./middlewares/errorHandlerMiddleware.js";
 
-const app = express()
-const PORT = process.env.PORT || 8000
+const app = express();
+const PORT = process.env.PORT || 8000;
 
-// Middlewares
-app.use(express.json())
-app.use(cors())
+//middlewares
+app.use(express.json());
+app.use(cors());
 
-// Connect To Database
-connectToMongoDb()
+//Api-endPoints
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/transactions", TransactionRouter);
+app.use("/openai", openaiRouter);
 
-// Router | API Endpoints
-app.use("/api/users", userRouter)
-app.use("/api/transactions", transactionRouter)
+// page not found
+app.use("*", (req, res, next) => {
+  const error = new Error("Not found");
+  error.statusCode = 404;
+  next(error);
+});
 
-// Start a server
+//global error handler
+app.use(errorHandler);
+
+connectDB();
 app.listen(PORT, (error) => {
-  error ? console.log("Error", error) : console.log("Server is Running")
-})
+  error ? console.log(error) : console.log("server running at port", `${PORT}`);
+});

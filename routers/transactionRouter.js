@@ -4,7 +4,7 @@ import {
   deleteManyTransactions,
   deleteTransaction,
   getTransaction,
-} from "../models/transactionModel.js";
+} from "../models/transaction/TransactionModel.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 

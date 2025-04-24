@@ -1,11 +1,11 @@
 import express from "express";
-import { createUser, getUserbyEmail } from "../models/userModel.js";
-import { comparePassword, hashPassword } from "../utils/bcrypt.js";
+import { createUser, getUserbyEmail } from "../models/user/UserModel.js";
+import { comparePassword, hashPassword } from "../utils/bcryptjs.js";
 import { jwtSign } from "../utils/jwt.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
-// User signup // Create User
+// User signup
 router.post("/", async (req, res, next) => {
   try {
     req.body.password = hashPassword(req.body.password);
@@ -28,7 +28,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// User Login 
+// User Login
 router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -44,7 +44,7 @@ router.post("/login", async (req, res, next) => {
           return res.json({
             status: "success",
             accessJWT,
-            message: "logged in successfully",
+            message: "logged in sucessfull",
             user,
           });
         }
@@ -60,7 +60,7 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-// User Profile
+// user Profile
 router.get("/", authenticate, (req, res, next) => {
   try {
     let user = req.userData;

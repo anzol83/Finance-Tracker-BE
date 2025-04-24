@@ -1,4 +1,4 @@
-import { getUserbyEmail } from '../models/userModel.js';
+import { getUserbyEmail } from "../models/user/UserModel.js";
 import { jwtVerify } from "../utils/jwt.js";
 
 export const authenticate = async (req, res, next) => {

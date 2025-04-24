@@ -1,4 +1,4 @@
-import transactionModel from "../schema/transactionSchema.js";
+import transactionModel from "./TransactionSchema.js";
 
 export const createTransaction = (tObj) => {
   return transactionModel(tObj).save();
@@ -14,6 +14,13 @@ export const deleteTransaction = (tid, userid) => {
     userId: userid,
   });
 };
+
+// const transactionData = await Transaction.deleteMany(
+//     {
+//     _id:{$in : transactionsids},
+//     userId:userData._id
+// }
+// )
 
 export const deleteManyTransactions = (transactionsids, userid) => {
   return transactionModel.deleteMany({
