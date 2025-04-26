@@ -7,7 +7,7 @@ import cors from "cors";
 import { errorHandler } from "./middlewares/errorHandlerMiddleware.js";
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 
 //middlewares
 app.use(express.json());
@@ -32,3 +32,5 @@ connectDB();
 app.listen(PORT, (error) => {
   error ? console.log(error) : console.log("server running at port", `${PORT}`);
 });
+
+// 6ayw882lzceqKkVb
